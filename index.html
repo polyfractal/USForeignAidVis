@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title></title>
+    <script type="text/javascript" src="d3.min.js"></script>
+	<script type="text/javascript" src="json.min.js"></script>
+	<script type="text/javascript" src="d3.csv.min.js"></script>
+    <script type="text/javascript" src="d3.geo.min.js"></script>
+	<script type="text/javascript" src="d3.geom.min.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
+	
+	
+    <style type="text/css">
+
+@import url("lib/jquery-ui/jquery-ui.css");
+
+body, .ui-widget {
+  font: 14px Helvetica Neue;
+}
+
+svg {
+  border: solid 1px #ccc;
+  background: #eee;
+}
+
+line.equator {
+  stroke: brown;
+  stroke-dasharray: 4,2;
+}
+
+path {
+  
+  stroke: #fff;
+}
+
+.selected {
+	fill: black;
+}
+
+
+div {
+  width: 960px;
+}
+
+    </style>
+  </head>
+  <body>
+  
+  <a href="http://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+  
+	<h1>Greenbook Visualization</h1> <h2>US Foreign Aid over time</h2>
+	<p>This is a simple project I made to learn <a href="http://mbostock.github.com/d3/">D3.js</a>, a visualization and graphing library designed for interactive graphs.
+	
+<h3>Controls/Instructions:</h3>
+<ul>
+	<li>Left click and drag map to move, control-click and drag to zoom</li>
+	<li>Hover over countries to see name and aid for that year, click for detailed stats</li>
+	<li>Hover over bar graphs to see aid for that year, click to switch years</li>
+	<li>The slider controls the displayed year as well</li>
+</ul>
+
+<h3>Data sources:</h3>
+<ul>
+	<li>Greenbook data came from <a href="http://gbk.eads.usaidallnet.gov/">USAID</a>. </li>
+	<li>"Inflation-adjusted dollars" were calculated using historical Consumer Price Indicies (CPI), available from the <a href="ftp://ftp.bls.gov/pub/special.requests/cpi/cpiai.txt">Bureau of Labor Statistics</a>.</li>
+	<li>The USAID adjusts for inflation with "GDP Chain Price Index", but I didn't notice that until I had finished implementing the CPI.</li>
+
+</ul>    </p>
+	
+	
+	<script type="text/javascript" src="foreignAid.js"></script>
+    
+    <div id="currentYear"></div>
+	<br/>
+	<form>
+		Historical Dollars<input type="radio" value="historical" name="cpiSelector" checked /><br/>
+		Inflation Adjusted Dollars<input type="radio" value="adjusted" name="cpiSelector" />
+	</form>
+	<table id="dataTable" width="960px" style="margin-bottom:80px">
+		<thead>
+			<tr>
+				<td id="dataYear"><h1></h1></td>
+			</tr>
+			<tr>
+				<td id="dataTitle" colspan="2"><h2></h2></td>
+			</tr>
+			<tr>
+				<td width="400px"><strong>Program</strong></td>
+				<td><strong>Value</strong></td>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+	
+	</table>
+    <script type="text/javascript">
+
+		$("input:radio").click( function() {
+			var value = $("input[@name=cpiSelector]:checked").val();
+			
+			if (value == "historical")
+				useHistorical = true;
+			else
+				useHistorical = false;
+			
+			redrawGraphs();
+			refresh();
+		});
+		
+		
+		$("#currentYear").slider({
+		  min: 1946,
+		  max: 2009,
+		  value: 1946,
+		  slide: function(event, ui) {
+			currentYear = ui.value;
+			refresh();
+		  }
+		});
+
+
+    </script>
+  </body>
+</html>
