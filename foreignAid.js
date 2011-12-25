@@ -115,7 +115,7 @@ var totalSpending = [],
 // - Historical is the raw value from the data
 // - Adjusted is divided by the CPI
 // - original is the original CSV (lists individual programs)
-var greenbook	
+var greenbook,
 	greenbookHistorical,
 	greenbookAdjusted,
 	originalGreenbook;
