@@ -20,13 +20,14 @@ function roundNumber(num, dec) {
 
 
 
-var xy = d3.geo.mercator();
-var path = d3.geo.path().projection(xy);
-
-var currentYear=1946;
+var xy = d3.geo.mercator(),
+	path = d3.geo.path().projection(xy),
+	dxy = {},
+	currentYear=1946,
+	numBars = 64,
+	barHeight = 80;
 
 //dxy object is used to control panning and zooming
-var dxy = {};
 dxy.mousedown = false;
 dxy.zooming = false;
 dxy.zoomLevel = 500;
@@ -82,9 +83,6 @@ var equator = d3.select("svg")
 
 ///////////////////////////////////////
 //These details relate to the bar chart under the map
-var numBars = 64;
-var barHeight = 80;
-
 var x = d3.scale.linear()
 	.domain([0, 1])
 	.range([0, 960/numBars]);
@@ -107,9 +105,9 @@ var chart = d3.select("body")
 //Values are kept separate so the user can switch views without reloading the csv
 // - Historical is the raw value from the data
 // - Adjusted is divided by the CPI
-var totalSpending = [];
-var totalSpendingHistorical = [];
-var totalSpendingAdjusted = [];
+var totalSpending = [],
+	totalSpendingHistorical = [],
+	totalSpendingAdjusted = [];
 
 //greenbook variables contain the spending per country per year
 //
@@ -117,18 +115,17 @@ var totalSpendingAdjusted = [];
 // - Historical is the raw value from the data
 // - Adjusted is divided by the CPI
 // - original is the original CSV (lists individual programs)
-var greenbook;	
-var greenbookHistorical;
-var greenbookAdjusted;
-var originalGreenbook;
+var greenbook	
+	greenbookHistorical,
+	greenbookAdjusted,
+	originalGreenbook;
 
 //misc.
-var currentCountry = "";
-var cpi;
-var useHistorical = true;
-
-var max=0;
-var fill;
+var currentCountry = "",
+	cpi,
+	useHistorical = true,
+	max=0,
+	fill;
 
 
 //Load and draw the countries
